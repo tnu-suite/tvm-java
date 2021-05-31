@@ -18,19 +18,21 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
     // mandatory dependencies for using Spock
-    compile "org.codehaus.groovy:groovy:3.0.7"
-    testCompile platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0")
-    testCompile "org.spockframework:spock-core"
+    implementation "org.codehaus.groovy:groovy:3.0.7"
+    testImplementation platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
     //testCompile "org.spockframework:spock-junit4"  // you can remove this if your code does not rely on old JUnit 4 rules
 
     // optional dependencies for using Spock
-    testCompile "org.hamcrest:hamcrest-core:2.2"   // only necessary if Hamcrest matchers are used
-    testRuntime "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
-    testRuntime "org.objenesis:objenesis:3.1"      // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
+    testImplementation "org.hamcrest:hamcrest-core:2.2"   // only necessary if Hamcrest matchers are used
+    testImplementation "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
+    testImplementation "org.objenesis:objenesis:3.1" // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-    // dependencies used by examples in this project
-    testRuntime "com.h2database:h2:1.4.197"
-    compile "org.codehaus.groovy:groovy-sql:3.0.7"
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.4.6'
 }
 
 test {
