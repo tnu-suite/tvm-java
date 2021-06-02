@@ -3,6 +3,11 @@ plugins {
     id 'groovy'
 }
 
+ext{
+    spockReportsVersion='2.0-groovy-3.0'
+    groovyVersion='3.0.7'
+}
+
 group 'com.techzealot'
 version '1.0-SNAPSHOT'
 
@@ -18,7 +23,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
     // mandatory dependencies for using Spock
-    implementation "org.codehaus.groovy:groovy:3.0.7"
+    implementation "org.codehaus.groovy:groovy:$groovyVersion"
     testImplementation platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
     //testCompile "org.spockframework:spock-junit4"  // you can remove this if your code does not rely on old JUnit 4 rules
@@ -27,6 +32,16 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-core:2.2"   // only necessary if Hamcrest matchers are used
     testImplementation "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
     testImplementation "org.objenesis:objenesis:3.1" // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
+
+    // you can use testRuntimeClasspath if you don't want to use spock-report-specific features in your Specs
+    testImplementation( "com.athaydes:spock-reports:$spockReportsVersion" ) {
+        transitive = false // this avoids affecting your version of Groovy/Spock
+    }
+    //spock report dependencies
+    implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
+    implementation "org.codehaus.groovy:groovy-json:$groovyVersion"
+    implementation "org.codehaus.groovy:groovy-templates:$groovyVersion"
+
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
