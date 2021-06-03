@@ -48,6 +48,11 @@ public class ByteStream implements Closeable {
     }
 
     @SneakyThrows
+    public int readByte() {
+        return dis.readByte();
+    }
+
+    @SneakyThrows
     public int readUnsignedByte() {
         return dis.readUnsignedByte();
     }

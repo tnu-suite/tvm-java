@@ -62,8 +62,13 @@ public class BootClassLoader {
         return classMetadata.get(name);
     }
 
-    public static InstanceKlass loadMainClass(String name) {
-        if (Objects.nonNull(mainKlass)) {
+    /**
+     * @param name
+     * @param cached 是否可在一个进程中加载多个mainClass
+     * @return
+     */
+    public static InstanceKlass loadMainClass(String name, boolean cached) {
+        if (Objects.nonNull(mainKlass) && cached) {
             return mainKlass;
         }
         InstanceKlass klass = loadKlass(name);
