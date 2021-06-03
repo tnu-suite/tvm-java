@@ -10,10 +10,10 @@ public class DescriptorInfo {
     public static final DescriptorInfo BYTE = new DescriptorInfo(BasicType.T_BYTE, byte.class);
     public static final DescriptorInfo CHAR = new DescriptorInfo(BasicType.T_CHAR, char.class);
     public static final DescriptorInfo SHORT = new DescriptorInfo(BasicType.T_SHORT, short.class);
-    public static final DescriptorInfo INT = new DescriptorInfo(BasicType.T_BOOLEAN, boolean.class);
-    public static final DescriptorInfo FLOAT = new DescriptorInfo(BasicType.T_BOOLEAN, boolean.class);
-    public static final DescriptorInfo DOUBLE = new DescriptorInfo(BasicType.T_BOOLEAN, boolean.class);
-    public static final DescriptorInfo LONG = new DescriptorInfo(BasicType.T_BOOLEAN, boolean.class);
+    public static final DescriptorInfo INT = new DescriptorInfo(BasicType.T_INT, int.class);
+    public static final DescriptorInfo FLOAT = new DescriptorInfo(BasicType.T_FLOAT, float.class);
+    public static final DescriptorInfo DOUBLE = new DescriptorInfo(BasicType.T_DOUBLE, double.class);
+    public static final DescriptorInfo LONG = new DescriptorInfo(BasicType.T_LONG, long.class);
     public static final DescriptorInfo VOID = new DescriptorInfo(BasicType.T_VOID, void.class);
     // 类型
     private int type;

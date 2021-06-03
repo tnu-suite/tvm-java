@@ -142,16 +142,40 @@ public class MethodDescriptorStream {
             DescriptorInfo descriptorInfo = paramDescriptors.get(i);
             int type = descriptorInfo.getType();
             switch (type) {
-                case BasicType.T_BOOLEAN:
-                case BasicType.T_BYTE:
-                case BasicType.T_CHAR:
-                case BasicType.T_SHORT:
-                case BasicType.T_INT:
+                case BasicType.T_BOOLEAN: {
+                    int val = frame.getStack().pop().getVal();
+                    if (val == 0) {
+                        params[i] = false;
+                    } else if (val == 1) {
+                        params[i] = true;
+                    } else {
+                        throw new IllegalArgumentException(MessageFormat.format("{0} can't be cast to boolean", val));
+                    }
+                    break;
+                }
+                case BasicType.T_BYTE: {
+                    int val = frame.getStack().pop().getVal();
+                    params[i] = (byte) val;
+                    break;
+                }
+                case BasicType.T_CHAR: {
+                    int val = frame.getStack().pop().getVal();
+                    params[i] = (char) val;
+                    break;
+                }
+                case BasicType.T_SHORT: {
+                    int val = frame.getStack().pop().getVal();
+                    params[i] = (short) val;
+                    break;
+                }
+                case BasicType.T_INT: {
+                    params[i] = frame.getStack().pop().getVal();
+                    break;
+                }
                 case BasicType.T_FLOAT:
                 case BasicType.T_DOUBLE:
                 case BasicType.T_LONG: {
-                    params[i] = frame.getStack().pop().getVal();
-                    break;
+                    throw new UnsupportedOperationException();
                 }
                 case BasicType.T_OBJECT: {
                     params[i] = frame.getStack().pop().getObject();
@@ -161,7 +185,6 @@ public class MethodDescriptorStream {
                 default: {
                     throw new UnsupportedOperationException(MessageFormat.format("unsupported type {0} now", type));
                 }
-
             }
         }
         return params;
