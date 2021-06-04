@@ -1,11 +1,11 @@
 import com.techzealot.tvm.jdk.Main
 import spock.lang.Specification
 
-class JvmSpec extends Specification {
+class JvmCaseSpec extends Specification {
 
 
-    def "start jvm"(String program, List<String> expect) {
-        when:
+    def "test Main.startJvm()"(String program, List<String> expect) {
+        when: "调整输出流至文件"
         def prefix = "com.techzealot.tvm.examples."
         //将输出流定位到文件,便于自动化比较测试结果
         // Q:无法调用文件输入输出api
@@ -26,12 +26,13 @@ class JvmSpec extends Specification {
         then:
         outputs == expect
         where:
-        program                 | expect
-        "HelloWorld"            | ["hello, world!"]
-        "primitives.printBasic" | ["true", "false", "-128", "-1", "0", "1", "127", "a", "A", "-32768", "-1", "0", "1", "32767",]
-        "primitives.PrintInt"   | ["-2147483648", "-1", "0", "1", "2", "3", "4", "5", "2147483647",]
-        "primitives.PrintFloat" | ["1.4E-45", "-1.0", "0.0", "1.0", "2.0", "3.4028235E38",]
-        "primitives.PrintLong"  | ["0", "1", "9223372036854775807", "-9223372036854775808", "-1",]
+        program                  | expect
+        "HelloWorld"             | ["hello, world!"]
+        "primitives.printBasic"  | ["true", "false", "-128", "-1", "0", "1", "127", "a", "A", "-32768", "-1", "0", "1", "32767",]
+        "primitives.PrintInt"    | ["-2147483648", "-1", "0", "1", "2", "3", "4", "5", "2147483647",]
+        "primitives.PrintFloat"  | ["1.4E-45", "-1.0", "0.0", "1.0", "2.0", "3.4028235E38",]
+        "primitives.PrintLong"   | ["0", "1", "9223372036854775807", "-9223372036854775808", "-1",]
+        "primitives.PrintDouble" | ["4.9E-324", "-1.0", "0.0", "1.0", "1.7976931348623157E308",]
     }
 
 }

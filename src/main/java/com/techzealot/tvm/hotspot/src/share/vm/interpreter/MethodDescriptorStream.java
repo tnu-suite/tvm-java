@@ -183,7 +183,8 @@ public class MethodDescriptorStream {
                     break;
                 }
                 case BasicType.T_DOUBLE: {
-                    throw new UnsupportedOperationException();
+                    params[i] = stack.popDouble();
+                    break;
                 }
                 case BasicType.T_OBJECT: {
                     params[i] = stack.pop().getObject();

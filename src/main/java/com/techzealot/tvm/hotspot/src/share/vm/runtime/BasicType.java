@@ -7,7 +7,7 @@ package com.techzealot.tvm.hotspot.src.share.vm.runtime;
  */
 public class BasicType {
 
-    //todo 参考openjdk
+    //todo 参考openjdk 是否使用枚举?
     public static final int T_BOOLEAN = 4;
     public static final int T_CHAR = 5;
     public static final int T_FLOAT = 6;
