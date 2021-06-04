@@ -11,16 +11,14 @@ import java.io.IOException;
 @Slf4j
 public class ByteStream implements Closeable {
 
-    private DataInputStream dis;
+    private final DataInputStream dis;
 
     public ByteStream(byte[] content) {
         dis = new DataInputStream(new ByteArrayInputStream(content));
     }
 
     /**
-     * 剩余可读字节数
-     *
-     * @return
+     * @return 剩余可读字节数
      */
     @SneakyThrows
     public int available() {
@@ -55,6 +53,11 @@ public class ByteStream implements Closeable {
     @SneakyThrows
     public int readUnsignedByte() {
         return dis.readUnsignedByte();
+    }
+
+    @SneakyThrows
+    public int readShort() {
+        return dis.readShort();
     }
 
     @SneakyThrows

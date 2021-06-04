@@ -11,7 +11,7 @@ class ArrayReflectSpec extends Specification {
         def method = a.getMethod("test", new Class<?>[]{Array.newInstance(int.class, new int[]{0, 0, 0}).getClass()})
         method.invoke(new ArrayDemo(), new Object[]{new int[0][0][0]})
         then:
-        method!=null
+        method != null
     }
 
 }

@@ -18,17 +18,17 @@ class SwitchCaseSpec extends Specification {
         thrown(UnsupportedOperationException)
     }
 
-    def "test switch boxing"(){
+    def "test switch boxing"() {
         when:
-        Character ch='a';
-        switch (ch){
-            case 'a':{
-                ch='b';
+        Character ch = 'a';
+        switch (ch) {
+            case 'a': {
+                ch = 'b';
                 break;
             }
         }
         then:
-        ch=='b'
+        ch == 'b'
     }
 
 }

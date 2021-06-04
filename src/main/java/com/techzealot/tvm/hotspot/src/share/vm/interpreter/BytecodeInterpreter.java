@@ -3,6 +3,9 @@ package com.techzealot.tvm.hotspot.src.share.vm.interpreter;
 import com.techzealot.tvm.hotspot.src.share.tools.ByteStream;
 import com.techzealot.tvm.hotspot.src.share.vm.oops.ConstantPool;
 import com.techzealot.tvm.hotspot.src.share.vm.oops.MethodInfo;
+import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.ConstantFloatInfo;
+import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.ConstantIntegerInfo;
+import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.ConstantLongInfo;
 import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.ConstantStringInfo;
 import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.ConstantUtf8Info;
 import com.techzealot.tvm.hotspot.src.share.vm.oops.constantpool.support.ConstantPoolItem;
@@ -36,6 +39,11 @@ public class BytecodeInterpreter {
                     //有符号byte入栈
                     log.info("execute bipush");
                     stack.push(new StackValue(BasicType.T_INT, codeStream.readByte()));
+                    break;
+                }
+                case Bytecodes._sipush: {
+                    log.info("execute _sipush");
+                    stack.push(new StackValue(BasicType.T_SHORT, codeStream.readShort()));
                     break;
                 }
                 case Bytecodes._iconst_m1: {
@@ -123,6 +131,146 @@ public class BytecodeInterpreter {
                     stack.push(new StackValue(BasicType.T_INT, locals.get(3).getVal()));
                     break;
                 }
+                case Bytecodes._fconst_0: {
+                    log.info("execute _fconst_0");
+                    stack.push(new StackValue(BasicType.T_FLOAT, 0.0f));
+                    break;
+                }
+                case Bytecodes._fconst_1: {
+                    log.info("execute _fconst_1");
+                    stack.push(new StackValue(BasicType.T_FLOAT, 1.0f));
+                    break;
+                }
+                case Bytecodes._fconst_2: {
+                    log.info("execute _fconst_2");
+                    stack.push(new StackValue(BasicType.T_FLOAT, 2.0f));
+                    break;
+                }
+                case Bytecodes._fload: {
+                    log.info("execute _fload");
+                    stack.push(new StackValue(BasicType.T_FLOAT, locals.get(codeStream.readUnsignedByte()).getFloat()));
+                    break;
+                }
+                case Bytecodes._fload_0: {
+                    log.info("execute _fload_0");
+                    stack.push(new StackValue(BasicType.T_FLOAT, locals.get(0).getFloat()));
+                    break;
+                }
+                case Bytecodes._fload_1: {
+                    log.info("execute _fload_1");
+                    stack.push(new StackValue(BasicType.T_FLOAT, locals.get(1).getFloat()));
+                    break;
+                }
+                case Bytecodes._fload_2: {
+                    log.info("execute _fload_2");
+                    stack.push(new StackValue(BasicType.T_FLOAT, locals.get(2).getFloat()));
+                    break;
+                }
+                case Bytecodes._fload_3: {
+                    log.info("execute _fload_3");
+                    stack.push(new StackValue(BasicType.T_FLOAT, locals.get(3).getFloat()));
+                    break;
+                }
+                case Bytecodes._fstore: {
+                    log.info("execute _fstore");
+                    locals.add(codeStream.readUnsignedByte(), new StackValue(BasicType.T_FLOAT, stack.pop().getFloat()));
+                    break;
+                }
+                case Bytecodes._fstore_0: {
+                    log.info("execute _fstore_0");
+                    locals.add(0, new StackValue(BasicType.T_FLOAT, stack.pop().getFloat()));
+                    break;
+                }
+                case Bytecodes._fstore_1: {
+                    log.info("execute _fstore_0");
+                    locals.add(1, new StackValue(BasicType.T_FLOAT, stack.pop().getFloat()));
+                    break;
+                }
+                case Bytecodes._fstore_2: {
+                    log.info("execute _fstore_2");
+                    locals.add(2, new StackValue(BasicType.T_FLOAT, stack.pop().getFloat()));
+                    break;
+                }
+                case Bytecodes._fstore_3: {
+                    log.info("execute _fstore_3");
+                    locals.add(3, new StackValue(BasicType.T_FLOAT, stack.pop().getFloat()));
+                    break;
+                }
+                case Bytecodes._lconst_0: {
+                    //先push低32位 后push高32位 == locals[n] << 8 | locals[n=1]
+                    log.info("execute _lconst_0");
+                    stack.pushLong(0L);
+                    break;
+                }
+                case Bytecodes._lconst_1: {
+                    log.info("execute _lconst_1");
+                    stack.pushLong(1L);
+                    break;
+                }
+                case Bytecodes._lload: {
+                    log.info("execute _lload");
+                    int index = codeStream.readUnsignedByte();
+                    stack.pushLong(locals.getLong(index));
+                    break;
+                }
+                case Bytecodes._lload_0: {
+                    log.info("execute _lload_0");
+                    stack.pushLong(locals.getLong(0));
+                    break;
+                }
+                case Bytecodes._lload_1: {
+                    log.info("execute _lload_1");
+                    stack.pushLong(locals.getLong(1));
+                    break;
+                }
+                case Bytecodes._lload_2: {
+                    log.info("execute _lload_2");
+                    stack.pushLong(locals.getLong(2));
+                    break;
+                }
+                case Bytecodes._lload_3: {
+                    log.info("execute _lload_3");
+                    stack.pushLong(locals.getLong(3));
+                    break;
+                }
+                case Bytecodes._lstore: {
+                    log.info("execute _lstore");
+                    int index = codeStream.readUnsignedByte();
+                    locals.addLong(index, stack.popLong());
+                    break;
+                }
+                case Bytecodes._lstore_0: {
+                    log.info("execute _lstore_0");
+                    locals.addLong(0, stack.popLong());
+                    break;
+                }
+                case Bytecodes._lstore_1: {
+                    log.info("execute _lstore_1");
+                    locals.addLong(1, stack.popLong());
+                    break;
+                }
+                case Bytecodes._lstore_2: {
+                    log.info("execute _lstore_2");
+                    locals.addLong(2, stack.popLong());
+                    break;
+                }
+                case Bytecodes._lstore_3: {
+                    log.info("execute _lstore_3");
+                    locals.addLong(3, stack.popLong());
+                    break;
+                }
+                case Bytecodes._ldc2_w: {
+                    int index = codeStream.readU2();
+                    ConstantPoolItem constantPoolItem = constantPool.get(index);
+                    if (constantPoolItem instanceof ConstantLongInfo) {
+                        long value = ((ConstantLongInfo) constantPoolItem).getValue();
+                        stack.pushLong(value);
+                    } else {
+                        //todo 可加载更多类型
+                        throw new UnsupportedOperationException(MessageFormat.format("ldc2_w not support now for {0}", constantPoolItem));
+                    }
+                    break;
+                }
                 case Bytecodes._ldc: {
                     log.info("execute ldc");
                     //Q:为什么是u1，常量池大小为u2?会不会无法表达？A:编译器在超过u1后会使用ldc_w,ldc2_w
@@ -131,8 +279,13 @@ public class BytecodeInterpreter {
                     if (constantPoolItem instanceof ConstantStringInfo) {
                         String value = constantPool.get(((ConstantStringInfo) constantPoolItem).getStringIndex(), ConstantUtf8Info.class).getValue();
                         stack.push(new StackValue(BasicType.T_OBJECT, value));
+                    } else if (constantPoolItem instanceof ConstantIntegerInfo) {
+                        stack.push(new StackValue(BasicType.T_INT, ((ConstantIntegerInfo) constantPoolItem).getValue()));
+                    } else if (constantPoolItem instanceof ConstantFloatInfo) {
+                        stack.push(new StackValue(BasicType.T_FLOAT, ((ConstantFloatInfo) constantPoolItem).getValue()));
                     } else {
-                        throw new UnsupportedOperationException();
+                        //todo 可加载更多类型
+                        throw new UnsupportedOperationException(MessageFormat.format("ldc not support now for {0}", constantPoolItem));
                     }
                     break;
                 }

@@ -5,9 +5,9 @@ plugins {
     id 'jacoco'
 }
 
-ext{
-    spockReportsVersion='2.0-groovy-3.0'
-    groovyVersion='3.0.7'
+ext {
+    spockReportsVersion = '2.0-groovy-3.0'
+    groovyVersion = '3.0.7'
 }
 
 group 'com.techzealot'
@@ -33,10 +33,11 @@ dependencies {
     // optional dependencies for using Spock
     testImplementation "org.hamcrest:hamcrest-core:2.2"   // only necessary if Hamcrest matchers are used
     testImplementation "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
-    testImplementation "org.objenesis:objenesis:3.1" // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
+    testImplementation "org.objenesis:objenesis:3.1"
+    // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
 
     // you can use testRuntimeClasspath if you don't want to use spock-report-specific features in your Specs
-    testImplementation( "com.athaydes:spock-reports:$spockReportsVersion" ) {
+    testImplementation("com.athaydes:spock-reports:$spockReportsVersion") {
         transitive = false // this avoids affecting your version of Groovy/Spock
     }
     //spock report dependencies

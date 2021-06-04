@@ -2,6 +2,7 @@ package com.techzealot.tvm.hotspot.src.share.vm.interpreter;
 
 import com.techzealot.tvm.hotspot.src.share.vm.runtime.BasicType;
 import com.techzealot.tvm.hotspot.src.share.vm.runtime.JavaVFrame;
+import com.techzealot.tvm.hotspot.src.share.vm.runtime.StackValueCollection;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -138,12 +139,13 @@ public class MethodDescriptorStream {
     public Object[] getParamValues(JavaVFrame frame) {
         int size = paramDescriptors.size();
         Object[] params = new Object[size];
+        StackValueCollection stack = frame.getStack();
         for (int i = 0; i < size; i++) {
             DescriptorInfo descriptorInfo = paramDescriptors.get(i);
             int type = descriptorInfo.getType();
             switch (type) {
                 case BasicType.T_BOOLEAN: {
-                    int val = frame.getStack().pop().getVal();
+                    int val = stack.pop().getVal();
                     if (val == 0) {
                         params[i] = false;
                     } else if (val == 1) {
@@ -154,31 +156,37 @@ public class MethodDescriptorStream {
                     break;
                 }
                 case BasicType.T_BYTE: {
-                    int val = frame.getStack().pop().getVal();
+                    int val = stack.pop().getVal();
                     params[i] = (byte) val;
                     break;
                 }
                 case BasicType.T_CHAR: {
-                    int val = frame.getStack().pop().getVal();
+                    int val = stack.pop().getVal();
                     params[i] = (char) val;
                     break;
                 }
                 case BasicType.T_SHORT: {
-                    int val = frame.getStack().pop().getVal();
+                    int val = stack.pop().getVal();
                     params[i] = (short) val;
                     break;
                 }
                 case BasicType.T_INT: {
-                    params[i] = frame.getStack().pop().getVal();
+                    params[i] = stack.pop().getVal();
                     break;
                 }
-                case BasicType.T_FLOAT:
-                case BasicType.T_DOUBLE:
+                case BasicType.T_FLOAT: {
+                    params[i] = stack.pop().getFloat();
+                    break;
+                }
                 case BasicType.T_LONG: {
+                    params[i] = stack.popLong();
+                    break;
+                }
+                case BasicType.T_DOUBLE: {
                     throw new UnsupportedOperationException();
                 }
                 case BasicType.T_OBJECT: {
-                    params[i] = frame.getStack().pop().getObject();
+                    params[i] = stack.pop().getObject();
                     break;
                 }
                 case BasicType.T_ARRAY:
