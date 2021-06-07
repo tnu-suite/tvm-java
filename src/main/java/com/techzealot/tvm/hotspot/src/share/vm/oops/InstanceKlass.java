@@ -48,15 +48,6 @@ public class InstanceKlass extends Klass {
         constantPool.setKlass(this);
     }
 
-    /**
-     * todo
-     *
-     * @return
-     */
-    public boolean containsMainMethod() {
-        return true;
-    }
-
     @Override
     public String toString() {
         return "InstanceKlass{" +

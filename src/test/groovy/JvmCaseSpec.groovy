@@ -26,13 +26,14 @@ class JvmCaseSpec extends Specification {
         then:
         outputs == expect
         where:
-        program                  | expect
-        "HelloWorld"             | ["hello, world!"]
-        "primitives.printBasic"  | ["true", "false", "-128", "-1", "0", "1", "127", "a", "A", "-32768", "-1", "0", "1", "32767",]
-        "primitives.PrintInt"    | ["-2147483648", "-1", "0", "1", "2", "3", "4", "5", "2147483647",]
-        "primitives.PrintFloat"  | ["1.4E-45", "-1.0", "0.0", "1.0", "2.0", "3.4028235E38",]
-        "primitives.PrintLong"   | ["0", "1", "9223372036854775807", "-9223372036854775808", "-1",]
-        "primitives.PrintDouble" | ["4.9E-324", "-1.0", "0.0", "1.0", "1.7976931348623157E308",]
+        program                   | expect
+        "HelloWorld"              | ["hello, world!"]
+        "primitives.printBasic"   | ["true", "false", "-128", "-1", "0", "1", "127", "a", "A", "-32768", "-1", "0", "1", "32767",]
+        "primitives.PrintInt"     | ["-2147483648", "-1", "0", "1", "2", "3", "4", "5", "2147483647",]
+        "primitives.PrintFloat"   | ["1.4E-45", "-1.0", "0.0", "1.0", "2.0", "3.4028235E38",]
+        "primitives.PrintLong"    | ["0", "1", "9223372036854775807", "-9223372036854775808", "-1",]
+        "primitives.PrintDouble"  | ["4.9E-324", "-1.0", "0.0", "1.0", "1.7976931348623157E308",]
+        "primitives.PrintComplex" | ["true", "100", "d", "10", "2000000", "234.5", "12345", "1.23456789E7",]
     }
 
 }

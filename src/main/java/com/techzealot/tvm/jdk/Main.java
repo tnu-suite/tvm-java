@@ -16,7 +16,7 @@ public class Main {
     public static void startJVM(String mainClass) {
 
         //加载main函数所在类
-        InstanceKlass mainKlass = BootClassLoader.loadMainClass(mainClass, false);
+        InstanceKlass mainKlass = BootClassLoader.loadKlass(mainClass);
 
         //获取main方法
         MethodInfo main = JavaNativeInterface.getMethod(mainKlass, "main", "([Ljava/lang/String;)V");

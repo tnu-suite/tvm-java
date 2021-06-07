@@ -2,8 +2,6 @@ package com.techzealot.tvm.hotspot.src.share.vm.classfile;
 
 import com.techzealot.tvm.hotspot.src.share.vm.oops.InstanceKlass;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;
@@ -27,15 +25,7 @@ public class BootClassLoader {
      */
     private static Map<String, InstanceKlass> classMetadata = new HashMap<>();
 
-    @Getter
-    @Setter
-    private static InstanceKlass mainKlass = null;
-
     public static InstanceKlass loadKlass(String name) {
-        return loadKlass(name, true);
-    }
-
-    private static InstanceKlass loadKlass(String name, boolean resolve) {
         InstanceKlass klass = findLoadedKlass(name);
         if (Objects.nonNull(klass)) {
             return klass;
@@ -61,23 +51,4 @@ public class BootClassLoader {
     private static InstanceKlass findLoadedKlass(String name) {
         return classMetadata.get(name);
     }
-
-    /**
-     * @param name
-     * @param cached 是否可在一个进程中加载多个mainClass
-     * @return
-     */
-    public static InstanceKlass loadMainClass(String name, boolean cached) {
-        if (Objects.nonNull(mainKlass) && cached) {
-            return mainKlass;
-        }
-        InstanceKlass klass = loadKlass(name);
-        if (!klass.containsMainMethod()) {
-            throw new IllegalStateException("not contain main method");
-        }
-        mainKlass = klass;
-        return mainKlass;
-    }
-
-
 }
