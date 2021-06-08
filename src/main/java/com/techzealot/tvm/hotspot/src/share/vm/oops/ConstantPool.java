@@ -48,13 +48,13 @@ public class ConstantPool {
     /**
      * 获取成员所在类或接口的全限定名 需要将/转为.
      *
-     * @param index
+     * @param index : member index
      * @return
      */
     public String getMemberContainerClass(int index) {
         AbstractConstantMemberRefInfo memberRefInfo = get(index, AbstractConstantMemberRefInfo.class);
         int classNameIndex = get(memberRefInfo.getClassIndex(), ConstantClassInfo.class).getNameIndex();
-        return get(classNameIndex, ConstantUtf8Info.class).getValue().replace("/", ".");
+        return get(classNameIndex, ConstantUtf8Info.class).getValue();
     }
 
     /**

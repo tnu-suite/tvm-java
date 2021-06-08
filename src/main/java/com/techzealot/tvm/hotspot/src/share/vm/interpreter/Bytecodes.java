@@ -2,7 +2,6 @@ package com.techzealot.tvm.hotspot.src.share.vm.interpreter;
 
 public class Bytecodes {
 
-    public static final int _illegal = -1;
     public static final int _nop = 0;
     public static final int _aconst_null = 1;
     public static final int _iconst_m1 = 2;

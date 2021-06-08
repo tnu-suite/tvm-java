@@ -175,7 +175,7 @@ public class MethodDescriptorStream {
                     break;
                 }
                 case BasicType.T_FLOAT: {
-                    params[i] = stack.pop().getFloat();
+                    params[i] = stack.popFloat();
                     break;
                 }
                 case BasicType.T_LONG: {
@@ -201,5 +201,37 @@ public class MethodDescriptorStream {
 
     public boolean isReturnVoid() {
         return returnDescriptor == DescriptorInfo.VOID;
+    }
+
+    public void storeLocalVariables(StackValueCollection preStack, StackValueCollection newLocals) {
+        int size = paramDescriptors.size();
+        for (int i = 0; i < size; i++) {
+            DescriptorInfo descriptorInfo = paramDescriptors.get(i);
+            int type = descriptorInfo.getType();
+            switch (type) {
+                case BasicType.T_BOOLEAN:
+                case BasicType.T_BYTE:
+                case BasicType.T_CHAR:
+                case BasicType.T_SHORT:
+                case BasicType.T_INT:
+                case BasicType.T_FLOAT:
+                case BasicType.T_OBJECT: {
+                    newLocals.add(i, preStack.pop());
+                    break;
+                }
+                case BasicType.T_LONG: {
+                    newLocals.addLong(i, preStack.popLong());
+                    break;
+                }
+                case BasicType.T_DOUBLE: {
+                    newLocals.addDouble(i, preStack.popDouble());
+                    break;
+                }
+                case BasicType.T_ARRAY:
+                default: {
+                    throw new UnsupportedOperationException(MessageFormat.format("unsupported type {0} now", type));
+                }
+            }
+        }
     }
 }

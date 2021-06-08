@@ -17,6 +17,14 @@ import java.util.Objects;
 @Slf4j
 public class JavaNativeInterface {
 
+    /**
+     * todo 需要声明AccessFlags
+     *
+     * @param klass
+     * @param name
+     * @param descriptor
+     * @return
+     */
     public static MethodInfo getMethod(InstanceKlass klass, String name, String descriptor) {
         ConstantPool constantPool = klass.getConstantPool();
         MethodInfo[] methods = klass.getMethods();

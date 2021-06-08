@@ -1,5 +1,6 @@
 package com.techzealot.tvm.hotspot.src.share.vm.utilities;
 
+import com.techzealot.tvm.hotspot.src.share.vm.runtime.StackValueCollection;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -13,5 +14,10 @@ public class PrintUtils {
             sb.append("k: ").append(k).append(" , v: ").append(v).append("\n");
         });
         log.info("{}", sb);
+    }
+
+    public static void printOpStackAndLVT(StackValueCollection stack, StackValueCollection locals) {
+        log.info("\n stack: {}", stack.toString());
+        log.info("\n locals: {}", locals.toString());
     }
 }

@@ -32,8 +32,24 @@ public class StackValueCollection {
         container.push(value);
     }
 
+    public void pushInt(int value) {
+        container.push(new StackValue(BasicType.T_INT, value));
+    }
+
+    public void pushFloat(float value) {
+        container.push(new StackValue(BasicType.T_FLOAT, Float.floatToIntBits(value)));
+    }
+
     public StackValue pop() {
         return container.pop();
+    }
+
+    public int popInt() {
+        return container.pop().getVal();
+    }
+
+    public float popFloat() {
+        return Float.intBitsToFloat(container.pop().getVal());
     }
 
     /**
@@ -68,6 +84,10 @@ public class StackValueCollection {
         locals[index] = value;
     }
 
+    public void addFloat(int index, float value) {
+        locals[index] = new StackValue(BasicType.T_FLOAT, Float.floatToIntBits(value));
+    }
+
     public void addLong(int index, long value) {
         locals[index] = new StackValue(BasicType.T_LONG, Bytes.getHigher32BitsFromLong(value));
         locals[index + 1] = new StackValue(BasicType.T_LONG, Bytes.getLower32BitsFromLong(value));
@@ -81,6 +101,10 @@ public class StackValueCollection {
 
     public StackValue get(int index) {
         return locals[index];
+    }
+
+    public float getFloat(int index) {
+        return Float.intBitsToFloat(locals[index].getVal());
     }
 
     public long getLong(int index) {
