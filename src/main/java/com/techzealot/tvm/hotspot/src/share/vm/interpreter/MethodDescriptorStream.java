@@ -1,7 +1,6 @@
 package com.techzealot.tvm.hotspot.src.share.vm.interpreter;
 
 import com.techzealot.tvm.hotspot.src.share.vm.runtime.BasicType;
-import com.techzealot.tvm.hotspot.src.share.vm.runtime.JavaVFrame;
 import com.techzealot.tvm.hotspot.src.share.vm.runtime.StackValueCollection;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -136,11 +135,15 @@ public class MethodDescriptorStream {
         return types;
     }
 
-    public Object[] getParamValues(JavaVFrame frame) {
+    /**
+     * @param stack
+     * @return
+     */
+    public Object[] getParamValues(StackValueCollection stack) {
         int size = paramDescriptors.size();
         Object[] params = new Object[size];
-        StackValueCollection stack = frame.getStack();
-        for (int i = 0; i < size; i++) {
+        //reverse order iteration
+        for (int i = size - 1; i >= 0; i--) {
             DescriptorInfo descriptorInfo = paramDescriptors.get(i);
             int type = descriptorInfo.getType();
             switch (type) {
@@ -203,9 +206,17 @@ public class MethodDescriptorStream {
         return returnDescriptor == DescriptorInfo.VOID;
     }
 
+    /**
+     * 参数从左至右入栈，因此需要从大到小反向设置局部变量表
+     * 利用2个栈结构调整顺序
+     *
+     * @param preStack
+     * @param newLocals
+     */
     public void storeLocalVariables(StackValueCollection preStack, StackValueCollection newLocals) {
         int size = paramDescriptors.size();
-        for (int i = 0; i < size; i++) {
+        StackValueCollection reverseStack = new StackValueCollection();
+        for (int i = size - 1; i >= 0; i--) {
             DescriptorInfo descriptorInfo = paramDescriptors.get(i);
             int type = descriptorInfo.getType();
             switch (type) {
@@ -216,15 +227,15 @@ public class MethodDescriptorStream {
                 case BasicType.T_INT:
                 case BasicType.T_FLOAT:
                 case BasicType.T_OBJECT: {
-                    newLocals.add(i, preStack.pop());
+                    reverseStack.push(preStack.pop());
                     break;
                 }
                 case BasicType.T_LONG: {
-                    newLocals.addLong(i, preStack.popLong());
+                    reverseStack.pushLong(preStack.popLong());
                     break;
                 }
                 case BasicType.T_DOUBLE: {
-                    newLocals.addDouble(i, preStack.popDouble());
+                    reverseStack.pushDouble(preStack.popDouble());
                     break;
                 }
                 case BasicType.T_ARRAY:
@@ -232,6 +243,41 @@ public class MethodDescriptorStream {
                     throw new UnsupportedOperationException(MessageFormat.format("unsupported type {0} now", type));
                 }
             }
+        }
+        for (int i = 0, index = 0; i < size; i++, index++) {
+            DescriptorInfo descriptorInfo = paramDescriptors.get(i);
+            int type = descriptorInfo.getType();
+            switch (type) {
+                case BasicType.T_BOOLEAN:
+                case BasicType.T_BYTE:
+                case BasicType.T_CHAR:
+                case BasicType.T_SHORT:
+                case BasicType.T_INT:
+                case BasicType.T_FLOAT:
+                case BasicType.T_OBJECT: {
+                    newLocals.add(index, reverseStack.pop());
+                    break;
+                }
+                case BasicType.T_LONG: {
+                    newLocals.addLong(index, reverseStack.popLong());
+                    //two slot,need skip one
+                    index++;
+                    break;
+                }
+                case BasicType.T_DOUBLE: {
+                    newLocals.addDouble(index, reverseStack.popDouble());
+                    //two slot,need skip one
+                    index++;
+                    break;
+                }
+                case BasicType.T_ARRAY:
+                default: {
+                    throw new UnsupportedOperationException(MessageFormat.format("unsupported type {0} now", type));
+                }
+            }
+        }
+        if (!reverseStack.empty()) {
+            throw new IllegalStateException(MessageFormat.format("store method {0} locals complete but params stack not empty", descriptor));
         }
     }
 }
